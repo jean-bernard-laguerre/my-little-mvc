@@ -6,7 +6,7 @@
         private $host = "localhost";
         private $dbname = "draft-shop";
         private $username = "root";
-        private $password = "SuperP3scado";
+        private $password = "";
 
         public function __construct()
         {
