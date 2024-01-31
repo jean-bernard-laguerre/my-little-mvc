@@ -13,7 +13,7 @@
             
             $auth = new AuthenticationController();
             if ($auth->profile()) {
-                $product = new $productType();
+                $product = new $productType;
                 return $product->findOneById($idProduct);
             } else {
                 header('Location: /login');

@@ -129,6 +129,5 @@
         }
         abstract public function findOneById(int $id): AbstractProduct|bool ;
         abstract public function findAll(): array;
-
         abstract public function findPaginated($page): array;
     }

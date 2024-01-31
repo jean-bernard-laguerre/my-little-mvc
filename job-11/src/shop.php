@@ -3,8 +3,8 @@
 
     $product = new App\Product();
     
-    if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $products = $product->findPaginated($_POST['page']);
+    if(isset($_GET['page'])) {
+        $products = $product->findPaginated($_GET['page']);
     }
     else {
         $products = $product->findPaginated(1);

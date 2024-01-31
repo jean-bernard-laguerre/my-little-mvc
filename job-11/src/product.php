@@ -37,7 +37,7 @@
 <body>
     <?= $errorMessage ?>
     <div>
-        <?php if($product): ?>
+        <?php if(isset($product)): ?>
             <h1><?= $product->getName() ?></h1>
             <img src="<?= $product->getPhoto()[0] ?>" alt="">
             <p><?= $product->getPrice() ?></p>
