@@ -8,7 +8,6 @@ class Cart
         private ?int $id = null,
         private ?int $id_user = null,
         ){
-        
 
     }
 
@@ -60,15 +59,19 @@ class Cart
                 return $this;
         }
 
-        public function createCart($idUser){
-            $req = "INSERT INTO cart(id_user) VALUE(':idUser')";
+        public function createCart($id_user): bool{
+            $req = "INSERT INTO cart (id_user) VALUE(:idUser)";
             $db = new Database();
             $req = $db->bdd->prepare($req);
-            $req->bindParam(':idUser', $idUser, PDO::PARAM_INT);
-            $req->execute();
+            $req->bindParam(':idUser', $id_user, PDO::PARAM_INT);
+            if($req->execute()){
+                $this->id = $db->bdd->lastInsertId();
+                return true;
+            }
+            return false;
         }
 
-        public function getCart($idUser)
+        public function getCart($idUser): Cart|bool
         {
             $req = "SELECT * FROM cart WHERE id = :idUser";
             $db = new Database();
@@ -76,42 +79,64 @@ class Cart
             $req->bindParam(":idUser", $idUser);
             $req->execute();
             $result = $req->fetch(PDO::FETCH_ASSOC);
-            $instance = new Cart($result['id'], $result['id_user']);
-            return $instance;
-
+            if($result){
+                return new Cart($result['id'], $result['id_user']);
+            }
+            return false;
         }
-
-        public function addProduct($product_id, $quantity){
-            $req = "INSERT INTO cart_product(id_product, id_quantity) VALUES(':id_product',':id_quantity')";
+        
+        /**
+         * Add/update a product to the cart
+         *
+         * @return ?void
+         */
+        public function addProduct($product_id, $quantity): void{
             $db = new Database();
+
+            $req = "SELECT * FROM cart_product WHERE id = :id AND id_product = :id_product";
             $req = $db->bdd->prepare($req);
-            $req->bindParam("id", $this->id);
+            $req->bindParam(":id", $this->id);
             $req->bindParam(":id_product", $product_id);
-            $req->bindParam(":id_quantity", $quantity);
             $req->execute();
+            $result = $req->fetch(PDO::FETCH_ASSOC);
 
+            if($result){
+                $quantity = $result['id_quantity'] + $quantity;
+                if($quantity > 0) {
+                    $this->updateProduct($product_id, $quantity);
+                } else {
+                    $this->deleteProduct($product_id);
+                }
+            } else {
+                $req = "INSERT INTO cart_product (id, id_product, id_quantity) VALUES (:id, :id_product, :id_quantity)";
+                $req = $db->bdd->prepare($req);
+                $req->bindParam(":id", $this->id);
+                $req->bindParam(":id_product", $product_id);
+                $req->bindParam(":id_quantity", $quantity);
+                $req->execute();
+            }
         }
 
-        public function updateProduct($product_id, $quantity){
-            $req = "UPDATE cart SET id_product = ':id_product', '':id_quantity' = ':id_quantity' ";
+        public function updateProduct($product_id, $quantity): void{
+            $req = "UPDATE cart_product SET id_quantity = :id_quantity WHERE id = :id AND id_product = :id_product";
             $db = new Database();
             $req = $db->bdd->prepare($req);
             $req->bindParam(":id_product", $product_id);
             $req->bindParam(":id_quantity", $quantity);
+            $req->bindParam(":id", $this->id);
             $req->execute();
 
         }
 
         public function deleteProduct($product_id){
-        $req = "DELETE FROM cart WHERE id = ':id_product'";
-        $db = new Database();
-        $req = $db->bdd->prepare($req);
-        $req->bindParam("id", $product_id);
-        $req->execute();
-        
+            $req = "DELETE FROM cart WHERE id = ':id_product'";
+            $db = new Database();
+            $req = $db->bdd->prepare($req);
+            $req->bindParam("id", $product_id);
+            $req->execute();
         }
 
-        public function getAllProducts(){
+        public function getAllProducts(): array{
             $req = "SELECT * FROM cart_product INNER JOIN product WHERE cart_product.id_product = product.id ";
             $db = new Database();
             $req = $db->bdd->prepare($req);
