@@ -1,6 +1,7 @@
 <?php namespace App;
 
     require_once '../vendor/autoload.php';
+    session_start();
 
     $errorMessage = null;
 
@@ -25,6 +26,14 @@
     else {
         $errorMessage = 'Aucun produit n\'a été demandé';
     }
+
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if(isset($_POST['quantity'])) {
+            $shop = new ShopController();
+            $shop->setUser($_SESSION['user']);
+            $shop->addProductToCart($_POST['quantity'], $product->getId());
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +46,7 @@
 <body>
     <?= $errorMessage ?>
     <div>
-        <?php if($product): ?>
+        <?php if(isset($product)): ?>
             <h1><?= $product->getName() ?></h1>
             <img src="<?= $product->getPhoto()[0] ?>" alt="">
             <p><?= $product->getPrice() ?></p>
@@ -57,5 +66,13 @@
             <?php endif ?>
         <?php endif ?>
     </div>
+
+    <div>
+        <?php if(isset($_SESSION['user'])): ?>
+            <form method="post">
+                <input name="quantity" value="1">
+                <input type="submit" value="Ajouter au panier">
+            </form>
+        <?php endif ?>
 </body>
 </html>
