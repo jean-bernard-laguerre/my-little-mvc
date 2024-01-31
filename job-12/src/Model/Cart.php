@@ -111,6 +111,16 @@ class Cart
         
         }
 
+        public function getAllProducts(){
+            $req = "SELECT * FROM cart_product INNER JOIN product WHERE cart_product.id_product = product.id ";
+            $db = new Database();
+            $req = $db->bdd->prepare($req);
+            $req->execute();
+            $products = $req->fetchAll(PDO::FETCH_ASSOC);
+            return $products;
+
+        }
+
 
 
 }
