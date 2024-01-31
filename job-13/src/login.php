@@ -1,19 +1,19 @@
 <?php
     require_once '../vendor/autoload.php';
+    session_start();
+    
+    $errorMessage = '';
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-        $name = $_POST['name'];
+    if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $_POST['email'];
         $password = $_POST['password'];
 
         $auth = new App\AuthenticationController();
-        $auth->setFullname($name);
         $auth->setEmail($email);
         $auth->setPassword($password);
 
-        if($auth->register()) {
-            header('Location: login.php');
+        if($auth->login()) {
+            header('Location: shop.php');
         }
         else {
             $errorMessage = 'Les identifiants fournis ne correspondent à aucun utilisateur';
@@ -29,14 +29,14 @@
     <title>Document</title>
 </head>
 <body>
-    <form method="post" >
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name">
+    <form
+        method="post"
+    >
         <label for="email">Email</label>
         <input type="email" name="email" id="email">
         <label for="password">Password</label>
         <input type="password" name="password" id="password">
-        <input type="submit" value="Register">
+        <input type="submit" value="Login">
     </form>
 </body>
 </html>
