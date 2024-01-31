@@ -71,7 +71,7 @@ class Cart
             return false;
         }
 
-        public function getCart($idUser): Cart|bool
+        public function getCart($idUser): Cart|null
         {
             $req = "SELECT * FROM cart WHERE id = :idUser";
             $db = new Database();
@@ -82,7 +82,7 @@ class Cart
             if($result){
                 return new Cart($result['id'], $result['id_user']);
             }
-            return false;
+            return null;
         }
         
         /**
@@ -99,9 +99,11 @@ class Cart
             $req->bindParam(":id_product", $product_id);
             $req->execute();
             $result = $req->fetch(PDO::FETCH_ASSOC);
+            var_dump($result);
 
             if($result){
                 $quantity = $result['id_quantity'] + $quantity;
+                var_dump($quantity);
                 if($quantity > 0) {
                     $this->updateProduct($product_id, $quantity);
                 } else {

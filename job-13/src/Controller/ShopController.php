@@ -44,11 +44,15 @@
             
             $this->cart ??= new Cart();
             if ($this->user) {
+                var_dump($this->user);
                 $this->cart->setIdUser($this->user->getId());
+                var_dump($this->cart);
                 $this->cart = $this->cart->getCart($this->user->getId());
             }
-
+        
+            
             if(!$this->cart) {
+                var_dump($this->cart);
                 $this->cart = new Cart();
                 $this->cart->setIdUser($this->user->getId());
                 $this->cart->createCart($this->user->getId());
