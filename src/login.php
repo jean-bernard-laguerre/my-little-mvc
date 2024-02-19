@@ -29,6 +29,7 @@
     <title>Document</title>
 </head>
 <body>
+    <?= $errorMessage ?>
     <form
         method="post"
     >

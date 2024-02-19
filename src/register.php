@@ -16,7 +16,7 @@
             header('Location: login.php');
         }
         else {
-            $errorMessage = 'Les identifiants fournis ne correspondent à aucun utilisateur';
+            $errorMessage = 'Un utilisateur avec cet email existe déjà';
         }
     }
 ?>
@@ -29,6 +29,7 @@
     <title>Document</title>
 </head>
 <body>
+    <?= $errorMessage ?>
     <form method="post" >
         <label for="name">Name</label>
         <input type="text" name="name" id="name">

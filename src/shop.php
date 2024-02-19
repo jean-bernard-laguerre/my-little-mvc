@@ -40,13 +40,13 @@
             <!-- pagination buttons (previous, next) -->
             <tr>
                 <td>
-                    <a href="./shop.php?page=1">First</a>
+                    <a href="shop.php?page=1">First</a>
                 </td>
                 <td>
-                    <a href="./shop.php?page=<?= $page - 1 ?>">Previous</a>
+                    <a href="shop.php?page=<?= $page - 1 ?>">Previous</a>
                 </td>
                 <td>
-                    <a href="./shop.php?page=<?= $page + 1 ?>">Next</a>
+                    <a href="shop.php?page=<?= $page + 1 ?>">Next</a>
                 </td>
         </tbody>
     </table>
