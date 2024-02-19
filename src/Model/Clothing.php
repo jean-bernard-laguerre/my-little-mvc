@@ -45,6 +45,19 @@
             return $this->material_fee;
         }
 
+        public function setSize(string $size): void {
+            $this->size = $size;
+        }
+        public function setColor(string $color): void {
+            $this->color = $color;
+        }
+        public function setType(string $type): void {
+            $this->type = $type;
+        }
+        public function setMaterialFee(int $material_fee): void {
+            $this->material_fee = $material_fee;
+        }
+
         /**
          * Set the value of size
          *
@@ -191,7 +204,7 @@
 
         /**
          * Add stock to the product
-         * @return Clothing
+         * @return void
          */
         public function addStock(int $quantity): void {
             $this->quantity += $quantity;
@@ -200,7 +213,7 @@
 
         /**
          * Remove stock from the product
-         * @return Clothing
+         * @return void
          */
         public function removeStock(int $quantity): void {
             $this->quantity -= $quantity;

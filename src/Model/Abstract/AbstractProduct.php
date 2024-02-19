@@ -75,9 +75,9 @@
 
         /**
          * Create a product
-         * @return AbstractProduct
+         * @return AbstractProduct|bool
          */
-        public function create(): AbstractProduct {
+        public function create(): AbstractProduct|bool {
             $db = new Database();
             $req = $db->bdd->prepare("INSERT INTO product (name, price, description, photo, quantity, created_at, updated_at, category_id)
                                     VALUES (:name, :price, :description, :photo, :quantity, :created_at, :updated_at, :id_category)");
@@ -98,9 +98,9 @@
 
         /**
          * Update a product
-         * @return AbstractProduct
+         * @return AbstractProduct|bool
          */
-        public function update(): AbstractProduct {
+        public function update(): AbstractProduct|bool {
             $db = new Database();
             $req = $db->bdd->prepare("UPDATE product SET name = :name, price = :price, description = :description, photo = :photo , quantity = :quantity, updated_at = :updated_at, category_id = :id_category WHERE id = :id");
             $req->bindParam(':name', $this->name);
@@ -119,7 +119,7 @@
 
         /**
          * Create or update a product
-         * @return bool
+         * @return AbstractProduct
          */
         public function save(): AbstractProduct {
             if($this->id) {
@@ -130,7 +130,7 @@
 
         /**
          * get the category of the product
-         * @return bool
+         * @return Category
          */
         public function getCategory(): Category {
             $db = new Database();

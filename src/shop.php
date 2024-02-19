@@ -2,13 +2,14 @@
     require_once '../vendor/autoload.php';
 
     $product = new App\Product();
+
+    $page = 1;
     
-    if($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $products = $product->findPaginated($_POST['page']);
+    if(isset($_GET['page']) && $_GET['page'] > 0) {
+        $page = $_GET['page'];
     }
-    else {
-        $products = $product->findPaginated(1);
-    }
+
+    $products = $product->findPaginated($page);
 ?>
 
 <!DOCTYPE html>
@@ -30,12 +31,23 @@
             <?php
                 foreach($products as $product) {
                     echo '<tr>';
-                    echo '<td>' . $product->getName() . '</td>';
+                    echo '<td><a href="product.php?id=' . $product->getId() . '">' . $product->getName() . '</a></td>';
                     echo '<td>' . $product->getPrice() . '</td>';
                     echo '<td>' . $product->getQuantity() . '</td>';
                     echo '</tr>';
                 }
             ?>
+            <!-- pagination buttons (previous, next) -->
+            <tr>
+                <td>
+                    <a href="./shop.php?page=1">First</a>
+                </td>
+                <td>
+                    <a href="./shop.php?page=<?= $page - 1 ?>">Previous</a>
+                </td>
+                <td>
+                    <a href="./shop.php?page=<?= $page + 1 ?>">Next</a>
+                </td>
         </tbody>
     </table>
 </body>

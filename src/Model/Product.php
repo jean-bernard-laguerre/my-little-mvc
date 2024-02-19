@@ -2,7 +2,7 @@
     use DateTime;
     use PDO;
 
-    class Product extends AbstractProduct {
+    class Product extends AbstractProduct implements StockableInterface{
 
         public function __construct(
             protected ?int $id = null,
@@ -99,5 +99,23 @@
                 ));
             }
             return $productsList;
+        }
+
+        /**
+         * Add stock to the product
+         * @return void
+         */
+        public function addStock(int $quantity): void {
+            $this->quantity += $quantity;
+            $this->save();
+        }
+
+        /**
+         * Remove stock from the product
+         * @return void
+         */
+        public function removeStock(int $quantity): void {
+            $this->quantity -= $quantity;
+            $this->save();
         }
     }

@@ -33,8 +33,14 @@
         public function getBrand(): string {
             return $this->brand;
         }
+        public function setBrand(string $brand): void {
+            $this->brand = $brand;
+        }
         public function getWarrantyFee(): int {
             return $this->warranty_fee;
+        }
+        public function setWarrantyFee(int $warranty_fee): void {
+            $this->warranty_fee = $warranty_fee;
         }
 
         /**
