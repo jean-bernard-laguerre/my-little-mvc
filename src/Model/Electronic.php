@@ -42,7 +42,7 @@
          *
          * @param string $brand
          *
-         * @return self
+         * @return array
          */
         public function findAll(): array {
             $db = new Database();
@@ -110,7 +110,7 @@
          *
          * @param int $id
          *
-         * @return self
+         * @return Electronic|bool
          */
         public function findOneById(int $id): Electronic|bool {
             $db = new Database();
@@ -181,7 +181,7 @@
         /**
          * Add stock to the product
          *
-         * @return self
+         * @return void
          */
         public function addStock(int $quantity): void {
             $this->quantity += $quantity;
@@ -190,7 +190,7 @@
         /**
          * Remove stock to the product
          *
-         * @return self
+         * @return void
          */
         public function removeStock(int $quantity): void {
             $this->quantity -= $quantity;

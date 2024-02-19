@@ -123,7 +123,7 @@
          * Create a user
          * @return User|bool
          */
-        public function create(): User {
+        public function create(): User|bool {
             $db = new Database();
             $sql = "INSERT INTO user (fullname, email, password, role)
                     VALUES (:fullname, :email, :password, :role)";

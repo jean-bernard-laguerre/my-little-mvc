@@ -112,11 +112,9 @@ class Cart
             $req->bindParam(":id_product", $product_id);
             $req->execute();
             $result = $req->fetch(PDO::FETCH_ASSOC);
-            var_dump($result);
 
             if($result){
                 $quantity = $result['id_quantity'] + $quantity;
-                var_dump($quantity);
                 if($quantity > 0) {
                     $this->updateProduct($product_id, $quantity);
                 } else {
@@ -154,10 +152,11 @@ class Cart
          * @return ?void
          */
         public function deleteProduct($product_id): void {
-            $req = "DELETE FROM cart WHERE id = :id_product";
+            $req = "DELETE FROM cart_product WHERE id_product = :id_product AND id = :id";
             $db = new Database();
             $req = $db->bdd->prepare($req);
             $req->bindParam(":id_product", $product_id);
+            $req->bindParam(":id", $this->id_user);
             $req->execute();
         }
 

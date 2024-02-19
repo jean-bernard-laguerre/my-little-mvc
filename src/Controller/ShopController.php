@@ -52,6 +52,18 @@
         }
 
         /**
+         * Show the cart of the user
+         * @return array
+         */
+        public function showCart(): array {
+            $auth = new AuthenticationController();
+            $this->user = $auth->profile();
+            $cart = new Cart();
+            $this->cart = $cart->getCart($this->user->getId());
+            return $this->cart->getAllProducts();
+        }
+
+        /**
          * Add a product to the cart
          * @param int $quantity
          * @param int $productId
@@ -61,15 +73,12 @@
             
             $this->cart ??= new Cart();
             if ($this->user) {
-                var_dump($this->user);
                 $this->cart->setIdUser($this->user->getId());
-                var_dump($this->cart);
                 $this->cart = $this->cart->getCart($this->user->getId());
             }
         
             
             if(!$this->cart) {
-                var_dump($this->cart);
                 $this->cart = new Cart();
                 $this->cart->setIdUser($this->user->getId());
                 $this->cart->createCart($this->user->getId());
@@ -84,9 +93,15 @@
          * @return void
          */
         public function deleteProductFromCart($idProduct): void {
+
             $this->cart ??= new Cart();
+            if ($this->user) {
+                $this->cart->setIdUser($this->user->getId());
+                $this->cart = $this->cart->getCart($this->user->getId());
+            }
             if($this->cart){
-        }
+                $this->cart->deleteProduct($idProduct);
+            }
         }
     }
     
