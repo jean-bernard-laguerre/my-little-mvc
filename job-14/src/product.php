@@ -35,6 +35,8 @@
             $shop->addProductToCart($_POST['quantity'], $product->getId());
         }
     }
+
+    
 ?>
 
 <!DOCTYPE html>
@@ -75,5 +77,6 @@
                 <input type="submit" value="Ajouter au panier">
             </form>
         <?php endif ?>
+    </div>
 </body>
 </html>

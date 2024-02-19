@@ -60,5 +60,12 @@
             
             $this->cart->addProduct($productId, $quantity);
         }
+
+
+        public function deleteProductFromCart($idProduct) {
+            $this->cart ??= new Cart();
+            if($this->cart){
+        }
+        }
     }
     

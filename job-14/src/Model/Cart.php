@@ -131,22 +131,34 @@ class Cart
         }
 
         public function deleteProduct($product_id){
-            $req = "DELETE FROM cart WHERE id = ':id_product'";
+            $req = "DELETE FROM cart WHERE id = :id_product";
             $db = new Database();
             $req = $db->bdd->prepare($req);
-            $req->bindParam("id", $product_id);
+            $req->bindParam(":id_product", $product_id);
             $req->execute();
         }
 
         public function getAllProducts(): array{
-            $req = "SELECT * FROM cart_product INNER JOIN product WHERE cart_product.id_product = product.id ";
-            $db = new Database();
+            $req = "SELECT 
+            cart_product.*, 
+            product.*, 
+            category.*, 
+            product.name AS product_name,
+            category.name AS category_name
+            FROM cart_product
+            LEFT JOIN product ON cart_product.id_product = product.id
+            INNER JOIN category ON product.category_id = category.id;";
+          
+            
+             $db = new Database();
             $req = $db->bdd->prepare($req);
             $req->execute();
             $products = $req->fetchAll(PDO::FETCH_ASSOC);
             return $products;
 
         }
+
+      
 
 
 
